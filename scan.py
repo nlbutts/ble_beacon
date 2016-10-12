@@ -15,7 +15,8 @@ class ScanDelegate(DefaultDelegate):
             if len(value) % 2 == 0:
                 ba = bytearray(binascii.unhexlify(value))
                 if ba[0] == 0x4C:
-                    print('Temp sensor')
+                    print('Temp sensor {0}'.format(ba[21]))
+                    major = ba[21]
                     rh = 125 * (ba[22] * 256) / 65536 -6
                     temp = 175.72 * (ba[23] * 256) / 65536 - 46.85
                     t = time.localtime()

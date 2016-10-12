@@ -5,6 +5,7 @@ import time
 import binascii
 import csv
 import os
+from plot import plotTempRhData
 
 class ScanDelegate(DefaultDelegate):
     def __init__(self):
@@ -23,12 +24,24 @@ class ScanDelegate(DefaultDelegate):
                     with open('temp_data.csv', 'a') as csvfile:
                         csvfile.write(outStr)
                         csvfile.write('\n')
+		    plotTempRhData()		    
 
 os.chdir('/home/pi/projects/ble_beacon')
+try:
+	open('temp_data.csv', 'r')
+except IOError:
+	print('File does not exist, creating file')
+	with open('temp_data.csv', 'w') as f:
+		f.write('sensor,day,date,time,rh,temp\n')
+	
 
 while True:
-        scanner = Scanner().withDelegate(ScanDelegate())
-        devices = scanner.scan(100)
+	try:
+	        scanner = Scanner().withDelegate(ScanDelegate())
+        	devices = scanner.scan(100)
+	except:
+		with open('log.txt', 'a') as log:
+			log.write('An exception occurred\n')
 
 for dev in devices:
     print "Device %s (%s), RSSI=%d dB" % (dev.addr, dev.addrType, dev.rssi)
