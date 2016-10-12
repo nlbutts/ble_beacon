@@ -24,7 +24,7 @@ class ScanDelegate(DefaultDelegate):
                     with open('temp_data.csv', 'a') as csvfile:
                         csvfile.write(outStr)
                         csvfile.write('\n')
-		    plotTempRhData()		    
+		    #plotTempRhData()		    
 
 os.chdir('/home/pi/projects/ble_beacon')
 try:
@@ -41,7 +41,7 @@ while True:
         	devices = scanner.scan(100)
 	except:
 		with open('log.txt', 'a') as log:
-			log.write('An exception occurred\n')
+			log.write('An exception occurred: \n' + sys.exc_info()[0])
 
 for dev in devices:
     print "Device %s (%s), RSSI=%d dB" % (dev.addr, dev.addrType, dev.rssi)
